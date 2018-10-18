@@ -272,7 +272,7 @@ if (!bossready){
   for (var i=0; i < numbofboxes; i++){
     if (miniboxesA[i]==false){
       killcount++
-      if (killcount=10){  //remove one = to get bug for testing
+      if (killcount==10){  //remove one = to get bug for testing
         bossready=true;
       }
     }
@@ -383,10 +383,10 @@ if (!bossready){
 
   //----------------------------------------------Boss shooting--------------------------------------------------
   //Rocket
-  if (bosscoll == 15){ // change rocket frequency here
-    bossrocket();
-    bosscoll = 0;
-  }
+  // if (bosscoll == 15){ // change rocket frequency here
+  //   bossrocket();
+  //   bosscoll = 0;
+  // }
 
   function bossrocket () { //move it outside the draw
     for (var w=0; w < numbofrockets; w++){
@@ -430,17 +430,20 @@ if (!bossready){
     rstatus[1] = rstatus[1] + rstatus[3];
   }
 
-  Homming (rocketdata);
-  translate(-rocketl / 2, -rocketh / 2); //this ruins your calculations above, no?
+  // Homming (rocketdata);
+  // translate(-rocketl / 2, -rocketh / 2); //this ruins your calculations above, no?
   // rotate(rocketangle);
   // z=z+0.017;
   // rotate(z);
   // p5.rotate(rocketangle)
-  rect(rocketdata[0],rocketdata[1], rocketl, rocketh);
+  // rect(rocketdata[0],rocketdata[1], rocketl, rocketh);
 
-  if (keyIsPressed && key == "m") { //-------------------debug cheats
-    rocketdata = [mouseX,mouseY,0,0,0];
-  }
+  rotate
+  rect(300,300,30,30);
+
+  // if (keyIsPressed && key == "m") { //-------------------debug cheats
+  //   rocketdata = [mouseX,mouseY,0,0,0];
+  // }
 
   function randrocket () {
     // random location and direction  ... rstatus generator

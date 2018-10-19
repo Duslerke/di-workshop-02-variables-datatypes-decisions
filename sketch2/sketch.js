@@ -11,8 +11,8 @@ var flickerfix = false;
 // var temptarget = [0,]
 var mousetemp = [-900, -900];
 
-var recarray = [-30, -20, 0, 0]; // x,y, sx, sy;
-var ellarray = [0,0,0,0];
+var recarray = [-30, -20, 0, 0, 0]; // x,y, sx, sy, rotation angle;
+var ellarray = [0,0,0,0,0];
 
 function setup() {
   createCanvas(1200, 700)
@@ -20,8 +20,8 @@ function setup() {
   background(r, g, b)
 }
 
-function directionfix(target, seeker) { // once hunter passes target, it wonders off to infinity. This function is here to fix that
-
+function directionfix(target, seeker) { //you lose negative signs when squaring distance, so.. once hunter passes target, it wonders off to infinity. This function is here to fix that
+                                      
   var xfix = Math.sign(target[0] - seeker[0]);
   var yfix = Math.sign(target[1] - seeker[1]);
   var xyfixarray = [xfix, yfix];
@@ -63,12 +63,23 @@ function universalSpeedLimit (maxspeed, target, seeker) {
   
 }
 
+function speeddirection (seeker) {
+
+  if (seeker[2] >= 0) {
+    seeker[4] = Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
+  }
+  if (seeker[2] < 0) { //can change to x anyway
+    seeker[4] = Math.PI - Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
+  }
+
+}
+
 function tracker (maxspeed, target, seeker) {
 
   var XYSpeedlimits = universalSpeedLimit(maxspeed, target, seeker);
   var truedist = distance(target, seeker);
   var singleloop = false;
-  console.log(truedist);
+  
   if ( speedlimit >= truedist[2] && !flickerfix){
     recarray[2] = 0;
     recarray[3] = 0;
@@ -78,15 +89,17 @@ function tracker (maxspeed, target, seeker) {
 
       flickerfix = true;
     }
-    singleloop = true; //still withinn if statment... checks whether it was executed at least once before turning it off.
+    singleloop = true; //still within if statement... checks whether it was executed at least once before turning it off.
     // This should create a single frame lag.
   }
   else {
     recarray[2] = XYSpeedlimits[0];
-    recarray[3] = XYSpeedlimits[1]; //temporary nonsense
+    recarray[3] = XYSpeedlimits[1]; //temporary nonsense for testing..still need acceleration for dodging action
 
     recarray[0] = recarray[0] + recarray[2]; //x
     recarray[1] = recarray[1] + recarray[3]; //y
+
+    speeddirection(seeker);
   }
   
   mousetemp[0] = mouseX;
@@ -95,7 +108,7 @@ function tracker (maxspeed, target, seeker) {
 
 function draw() {
   // fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
-  z=z+0.017;
+  // z=z+0.017;
   ellarray[0] = mouseX;
   ellarray[1] = mouseY;
 
@@ -117,9 +130,24 @@ function draw() {
   translate(recarray[0],recarray[1]); // I move my square by translate
   
   
-  rotate(z);
-  rect(0,0, 30, 30);
+  rotate(recarray[4]-Math.PI/2);
+  rect(0,0, 10, 40);
   pop();
 
   ellipse(ellarray[0], ellarray[1], 15, 15);
+}
+
+function recthitbox () {
+
+}
+
+class Rectfollower {
+  constructor(coordarray, shapearray, alive, maxspeed, type) { //coordinates array, boolean alive (draw, not draw)
+    this.coordarray = coordarray; //initialize based on external conditions.
+    this.alive = alive;
+    this.maxspeed = maxspeed;
+    this.type = type;
+    this.shapearray = shapearray;
+  }
+ //I no need no stinking method.. sad truth it's tad bit too big.
 }

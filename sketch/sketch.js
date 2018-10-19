@@ -417,7 +417,7 @@ if (!bossready){
     if (rstatus[2] >= 0) {
       rstatus[4] = Math.asin(rstatus[3]/Math.sqrt( Math.pow(rstatus[2], 2) + Math.pow(rstatus[3], 2) ));
     }
-    if (rstatus[3] < 0) {
+    if (rstatus[2] < 0) { //can change to x anyway
       rstatus[4] = Math.PI - Math.asin(rstatus[3]/Math.sqrt( Math.pow(rstatus[2], 2) + Math.pow(rstatus[3], 2) ));
     }
 

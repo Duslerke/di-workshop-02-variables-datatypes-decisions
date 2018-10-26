@@ -43,7 +43,7 @@ class Foodpill {
   }
   
   function foodpillscreate() { // set index
-    var pillcoordinate = [1000*Math.random(), 600*Math.random()]; //change to canvas variables later
+    var pillcoordinate = [(canvaWidth-100)*Math.random()+50, (canvaHeight-100)*Math.random()+50]; //change to canvas variables later
     var sizea = 10;
     var sizeb = 20;
     var hitbo = hitarr(pillcoordinate, sizea, sizeb);
@@ -64,6 +64,6 @@ class Foodpill {
     if (scoreincr == 10) {
       speedlimit = speedlimit + 1;
       scoreincr = 0;
-      console.log(speedlimit);
+      // console.log(speedlimit);
     }
   }

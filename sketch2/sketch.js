@@ -6,12 +6,19 @@ var r = 80
 var g = 120
 var b = 90
 var z = 0;
+var canvaWidth = 1200;
+var canvaHeight = 600;
 var speedlimit = 1;
 var flickerfix = false;
 var gravAccel = 1;
 var bounceConst = 0.7;
 
 var frames = 0;
+var enemyFrames = 0;
+var ePS = 1; //enemies per second
+var shieldFrames = 0;
+var shieldDuration = 4;
+var shieldCoolDown = 20;
 // var temptarget = [-1,0];
 // var temptarget = [0,]
 var mousetemp = [-900, -900];
@@ -24,6 +31,7 @@ var recarray = [-30, -20, 0, 0, 0]; // x,y, sx, sy, rotation angle;
 var ellarray = [0,0,0,0,0];
 
 var bulletArray = [];
+var rectangleArray = [];
 
 var foodArrayAlive = [];
 for (let i = 0; i < nofood; i++) {
@@ -35,7 +43,7 @@ for (let i = 0; i < nofood; i++) {
 }
 
 function setup() {
-  createCanvas(1200, 700)
+  createCanvas(canvaWidth, canvaHeight)
 // frameRate(1);
   background(r, g, b)
 
@@ -48,140 +56,25 @@ function setup() {
  var playerOne = new Player(true);
 
 
-function directionfix(target, seeker) { //you lose negative signs when squaring distance, so.. once hunter passes target, it wonders off to infinity. This function is here to fix that
-                                      
-  var xfix = Math.sign(target[0] - seeker[0]);
-  var yfix = Math.sign(target[1] - seeker[1]);
-  var xyfixarray = [xfix, yfix];
-  return xyfixarray;
 
-}
-
-function distance (target, seeker){
-  
-  var deltax = target[0] - seeker[0];
-  var deltay = target[1] - seeker[1];
-  var distonce = Math.sqrt( Math.pow(deltax,2) + Math.pow(deltay, 2) );
-  var tempdistarray = [deltax, deltay, distonce]; // dx, dy, distance.
-  // console.log("p1: " + playerOne.playercoord + " t: " + tempfoll.coordarray);
-  // console.log(tempdistarray)
-
-
-  return tempdistarray;
-}
-
-function percentcalc (target, seeker) { // calculates squared dx, dy % with respect to distance;
-
-  var distdata = distance(target, seeker);
-  var percentx = Math.pow(distdata[0], 2)/Math.pow(distdata[2],2);
-  var percenty = Math.pow(distdata[1], 2)/Math.pow(distdata[2],2);
-
-  var percarray = [percentx, percenty];
-
-  return percarray; // % x,y array
-}
-
-function universalSpeedLimit (maxspeed, target, seeker) {
-
-  var speedratios = percentcalc(target, seeker);
-  var polarity = directionfix(target, seeker);
-
-  var limitx = polarity[0]*Math.sqrt( Math.pow(maxspeed,2)*speedratios[0] );
-  var limity = polarity[1]*Math.sqrt( Math.pow(maxspeed,2)*speedratios[1] );
-  var XYlimitArray = [limitx, limity]; // can finally be used in conditional statements;
-
-  return XYlimitArray;
-  
-}
-
-function speeddirection (seeker) {
-
-  if (seeker[2] >= 0) {
-    seeker[4] = Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
-  }
-  if (seeker[2] < 0) { //can change to x anyway
-    seeker[4] = Math.PI - Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
-  }
-
-}
-
-
-
-class Button {
-  constructor(purpose, name, x, y, w, h) {
-    this.purpose = purpose;
-    this.name = name;
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.Sy =0;
-  }
-
-  click () {
-    if (((this.x <= mouseX+7)&&(mouseX-7 <= this.x + this.w)) && ((this.y <= mouseY+7)&&(mouseY-7 <= this.y + this.h)))  {
-      screenstate = this.purpose;
-    }
-  }
-  draw () {
-    this.fall();
-    fill(123,145,23);
-    rect(this.x, this.y, this.w, this.h)
-    this.description();
-  }
-  fall () {
-
-    if (Math.abs(this.Sy) < 1 && this.y >= 578) {
-      this.Sy = 0;
-    }
-    else{
-      this.y = this.y + this.Sy;
-      this.Sy = this.Sy + gravAccel;
-    }
-
-    if (580-this.y <= this.Sy ) {
-      this.y = 580;
-    }
-    if (this.y >= 580) {
-      this.Sy = -bounceConst*(this.Sy); //+1
-    }
-
-  }
-  description () {
-    textSize(16);
-    fill(0, 0, 0);
-    text('Start Game', this.x + 10, this.y + this.h/2 + 5);
-  }
-
-}
 
 var startgame = new Button ("game", "Start Game", 600, 100, 100, 50);
 
-function runmenu () {
-  background(r,g,b);
-  startgame.draw();
-  fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
-  ellipse(ellarray[0], ellarray[1], 14, 14);
 
-  if (mouseIsPressed){
-    startgame.click();
-  }
-  // screenstate = "game";
-}
 
-var tempfoll = new Rectfollower([1000, 600*Math.random(), 1, 1, 0],true,speedlimit,'rocket')
-var tempfoll2 = new Rectfollower([1000, 600*Math.random(), 1, 1, 0],true,speedlimit,'rocket') //nice test
-
+// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
+// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,"rocket")); //nice test
 
 function rungame () {
     // fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
   // z=z+0.017;
   // ellarray[0] = mouseX;
   // ellarray[1] = mouseY;
-
-// console.log(tempfoll.coordarray);
-  background(r, g, b) // food color
-
+  enemyFrames++;
+  shieldFrames++;
+// console.log(rectangleArray.push(ordarray);
+  background(r, g, b); // food color
+  // frameRate(1);
 
 
 
@@ -189,11 +82,21 @@ function rungame () {
   displayscore(); //has to be before the full of cursor and trackers
 
   playerOne.draw();
-  tempfoll.draw();
-  tempfoll2.draw();
+  enemyGenerator();
+  // rectangleArray[0].draw();
+  // rectangleArray[1].draw();
+
+  rectangleArray.forEach((enemy) => { //draw bullets
+    enemy.draw();
+  });
+
+  // if (rectangleArray.length > 0) {
+    
+  // }
 
   // need listenForInput () {} function to get shooting, shield, other powers
   playerOne.shoot();
+  playerOne.shield();
 
   foodObjRef.forEach((pill) => {
     pill.draw();
@@ -204,6 +107,9 @@ function rungame () {
     bullot.draw();
   });
 
+
+  garbageCollection();
+  collisionCheck();
   // need a separate function for drawing shit, collision checking, and so on...
 
   // text(frameCount, 20, height / 2);
@@ -213,8 +119,8 @@ function rungame () {
   //   frames = 0;
   // }
 
-  console.log(bulletArray)
-  // tracker(speedlimit, playerOne.playercoord, tempfoll.coordarray); //tracker turi buti po p1, nes p1 nespeja initialise
+  // console.log(bulletArray)
+  // tracker(speedlimit, playerOne.playercoord, rectangleArray.push(ordarray); //tracker turi buti po p1, nes p1 nespeja initialise
 
   //rectangle_object.draw();
   
@@ -254,7 +160,7 @@ function displayscore () {
 
 
 function lossCond () {
-  if (mouseX==recarray[0] && mouseY==recarray[1]) { //if collision AND no shield - the later one is for later.
+  if (true) { //if no shield - the later one is for later.
     //the difficult part is making rotating hitbox - need some time on that. Or I could hack --> if (Centers align) {...}
     textSize(62);
     fill(255, 255, 255);
@@ -264,8 +170,55 @@ function lossCond () {
   }
 }
 
+function collisionCheck () {
+  for (var i=0; i<bulletArray.length; i++){
+    // bulletArray[i].outOfBounds(i);
+    for (var eni=0; eni<rectangleArray.length; eni++) {
+      bulletArray[i].hitCheck(i, eni);
+    }
+  }
+}
 
 
+function garbageCollection () {
+  for (var i=0; i<bulletArray.length; i++) {
+    bulletArray[i].outOfBounds(i);
+
+    if (bulletArray[i].alive == false) {
+      bulletArray[i].popMeOut(i);         //pop it out of array
+    }
+  }
+  for (var eni=0; eni<rectangleArray.length; eni++) {
+    if ( rectangleArray[eni].alive == false ) {
+      rectangleArray[eni].death(eni);
+    }
+  }
+}
+
+function enemyGenerator () {
+  if (enemyFrames > 60/ePS) {
+    var ranwall = Math.random();
+    if(ranwall <= 0.25){ // right wall
+      rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
+      enemyFrames=0;
+    }
+    else if (ranwall <= 0.5){ // left wall
+      rectangleArray.push(new Rectfollower([0, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
+      enemyFrames=0;
+    }
+    else if (ranwall <= 0.75) { // top wall
+      rectangleArray.push(new Rectfollower([canvaWidth*Math.random(), 0, 1, 1, 0],true,speedlimit,'rocket'));
+      enemyFrames=0;
+    }
+    else{
+      rectangleArray.push(new Rectfollower([canvaWidth*Math.random(), canvaHeight, 1, 1, 0],true,speedlimit,'rocket'));
+      enemyFrames=0;
+    }
+  }
+}
+
+// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
+// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,"rocket")); //nice test
 
 
 // function mfcollision (foodbox) { //mouse-food collision. foodcoord = hitarr

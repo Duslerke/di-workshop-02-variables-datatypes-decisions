@@ -2,7 +2,9 @@ class Player { //I'm yet to instantiate one, though
   constructor (alive) {
     this.playercoord =[];
     this.alive = alive;
-    this.rateOfFire = 2;
+    this.shieldReady = true;
+    this.shieldInUse = false;
+    this.rateOfFire = 20; //this should be a value stored in database of all bullets
   }
   //power ups and shit
   move () {
@@ -18,7 +20,7 @@ class Player { //I'm yet to instantiate one, though
 
   shoot () {       //create another bullet - need rate of fire...
     
-    if (keyIsPressed && frames > 60) { // need to make this more ellegant ... create a function for frame calc
+    if (keyIsPressed && frames > 60/this.rateOfFire) { // need to make this more ellegant ... create a function for frame calc
       
       switch (key) {
         case "a" : 
@@ -27,17 +29,34 @@ class Player { //I'm yet to instantiate one, though
         break;
         case "d" :  
         bulletArray.push(new Bullet ([this.playercoord[0], this.playercoord[1], 1, 0], true));
+        frames = 0;
         break;
         case "w" :
         bulletArray.push(new Bullet ([this.playercoord[0], this.playercoord[1], 0, -1], true));
+        frames = 0;
         break;
         case "s" :
         bulletArray.push(new Bullet ([this.playercoord[0], this.playercoord[1], 0, 1], true));
+        frames = 0;
         break;
       }
     }
   }
 
-  // shield () {}
+  shield () {
+    if (this.shieldReady && keyIsPressed && key == "e") { //I know code is shit.. I'm writing it in 02:01 in the morning
+      this.shieldReady = false;
+      this.shieldInUse = true;
+      shieldFrames = 0;
+    }
+    if (this.shieldInUse && shieldFrames > 60*shieldDuration) {
+      this.shieldInUse = false;
+      shieldFrames = 0;
+    }
+    if (!this.shieldInUse && !this.shieldReady && shieldFrames > 60*shieldCoolDown) {
+      this.shieldReady = true;
+      shieldFrames = 0;
+    }
+  }
 
 }

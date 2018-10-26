@@ -14,7 +14,9 @@ class Rectfollower {
       if (this.alive) {
 
         this.tracker(speedlimit, playerOne.playercoord, this.coordarray);
-        fill(this.coordarray[1], 255-Math.sqrt(this.coordarray[0]*this.coordarray[1]), this.coordarray[0]);
+        // fill(this.coordarray[1], 255-Math.sqrt(this.coordarray[0]*this.coordarray[1]), this.coordarray[0]);
+        var coloray = Coloriser(this.coordarray);
+        fill(coloray[0],coloray[1],coloray[2]);
         push();
         rectMode(CENTER);
         translate(this.coordarray[0],this.coordarray[1]); // I move my square by translate

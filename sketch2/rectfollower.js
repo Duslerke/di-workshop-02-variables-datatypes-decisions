@@ -4,7 +4,7 @@ class Rectfollower {
       this.alive = alive;
       this.maxspeed = maxspeed;
       this.type = type;
-      this.width = 10*3;
+      this.width = 10*2;
       this.height = 40;
       // this.shapearray = shapearray;  //for now let's forget it
     }
@@ -35,7 +35,7 @@ class Rectfollower {
 
       if ( (this.coordarray[0]-(this.width/2) <= mouseX && mouseX <= this.coordarray[0]+(this.width/2) ) &&(this.coordarray[1]-(this.height/2) <= mouseY && mouseY <= this.coordarray[1]+(this.height/2)) ) {
 
-        if (!playerOne.shieldInUse) {
+        if (!shieldObj.shieldInUse) {
           pop();
           lossCond();
         }

@@ -2,8 +2,6 @@ class Player { //I'm yet to instantiate one, though
   constructor (alive) {
     this.playercoord =[];
     this.alive = alive;
-    this.shieldReady = true;
-    this.shieldInUse = false;
     this.rateOfFire = 20; //this should be a value stored in database of all bullets
   }
   //power ups and shit
@@ -40,22 +38,6 @@ class Player { //I'm yet to instantiate one, though
         frames = 0;
         break;
       }
-    }
-  }
-
-  shield () {
-    if (this.shieldReady && keyIsPressed && key == "e") { //I know code is shit.. I'm writing it in 02:01 in the morning
-      this.shieldReady = false;
-      this.shieldInUse = true;
-      shieldFrames = 0;
-    }
-    if (this.shieldInUse && shieldFrames > 60*shieldDuration) {
-      this.shieldInUse = false;
-      shieldFrames = 0;
-    }
-    if (!this.shieldInUse && !this.shieldReady && shieldFrames > 60*shieldCoolDown) {
-      this.shieldReady = true;
-      shieldFrames = 0;
     }
   }
 

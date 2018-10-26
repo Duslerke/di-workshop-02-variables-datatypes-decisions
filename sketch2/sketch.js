@@ -53,9 +53,9 @@ function setup() {
 
 }
 
- var playerOne = new Player(true);
+var playerOne = new Player(true);
 
-
+var shieldObj = new Shields();
 
 
 var startgame = new Button ("game", "Start Game", 600, 100, 100, 50);
@@ -66,37 +66,26 @@ var startgame = new Button ("game", "Start Game", 600, 100, 100, 50);
 // rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,"rocket")); //nice test
 
 function rungame () {
-    // fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
-  // z=z+0.017;
-  // ellarray[0] = mouseX;
-  // ellarray[1] = mouseY;
+
   enemyFrames++;
   shieldFrames++;
-// console.log(rectangleArray.push(ordarray);
+
   background(r, g, b); // food color
   // frameRate(1);
 
+  infoDisplay();
 
-
-
-  displayscore(); //has to be before the full of cursor and trackers
-
+  shieldObj.shieldsCheck();
   playerOne.draw();
   enemyGenerator();
-  // rectangleArray[0].draw();
-  // rectangleArray[1].draw();
+
 
   rectangleArray.forEach((enemy) => { //draw bullets
     enemy.draw();
   });
 
-  // if (rectangleArray.length > 0) {
-    
-  // }
 
-  // need listenForInput () {} function to get shooting, shield, other powers
   playerOne.shoot();
-  playerOne.shield();
 
   foodObjRef.forEach((pill) => {
     pill.draw();
@@ -110,34 +99,9 @@ function rungame () {
 
   garbageCollection();
   collisionCheck();
-  // need a separate function for drawing shit, collision checking, and so on...
 
-  // text(frameCount, 20, height / 2);
-  text(frames, 40, height / 2);
   frames++; //need a function that does this
-  // if (frames = 60) {
-  //   frames = 0;
-  // }
-
-  // console.log(bulletArray)
-  // tracker(speedlimit, playerOne.playercoord, rectangleArray.push(ordarray); //tracker turi buti po p1, nes p1 nespeja initialise
-
-  //rectangle_object.draw();
   
-  // fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
-  // push();
-  // rectMode(CENTER);
-  // translate(recarray[0],recarray[1]); // I move my square by translate
-
-  // rotate(recarray[4]-Math.PI/2);
-  // rect(0,0, 10, 40);
-  // pop();
-  //smth smth
-
-  // fill(mouseY, 255-Math.sqrt(mouseX*mouseY), mouseX);
-  // ellipse(ellarray[0], ellarray[1], 14, 14);
-
-  // lossCond(); instead of this search for collisions for each object
 }
 
 function draw() {
@@ -149,12 +113,6 @@ function draw() {
       rungame();
       break;
   }
-}
-
-function displayscore () {
-  textSize(32);
-  fill(0, 102, 153);
-  text('Food Collected: ' + score, 10, 30);
 }
 
 
@@ -216,18 +174,5 @@ function enemyGenerator () {
     }
   }
 }
-
-// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
-// rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,"rocket")); //nice test
-
-
-// function mfcollision (foodbox) { //mouse-food collision. foodcoord = hitarr
-//   if ( ( (foodbox[0]<=mouseX+7)&&(foodbox[1]>=mouseX-7) ) && ( (foodbox[2]<=mouseY+7)&&(foodbox[3]>=mouseY-7) ) ) { //ellipse radius = 7
-//     this.pillDeath();
-//     //play sound or smth.
-//   }
-// }
-
-
 
 

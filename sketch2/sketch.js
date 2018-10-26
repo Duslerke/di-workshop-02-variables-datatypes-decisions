@@ -51,6 +51,8 @@ function setup() {
     foodpillsadd();
   }
 
+  noCursor();
+
 }
 
 var playerOne = new Player(true);
@@ -79,6 +81,10 @@ function rungame () {
   playerOne.draw();
   enemyGenerator();
 
+  foodObjRef.forEach((pill) => {
+    pill.draw();
+    pill.mfcollision();
+  });
 
   rectangleArray.forEach((enemy) => { //draw bullets
     enemy.draw();
@@ -86,11 +92,6 @@ function rungame () {
 
 
   playerOne.shoot();
-
-  foodObjRef.forEach((pill) => {
-    pill.draw();
-    pill.mfcollision();
-  });
   
   bulletArray.forEach((bullot) => { //draw bullets
     bullot.draw();
@@ -112,6 +113,9 @@ function draw() {
     case "game":
       rungame();
       break;
+    case "gameOver":
+      runGameOver();
+      break;
   }
 }
 
@@ -123,7 +127,7 @@ function lossCond () {
     textSize(62);
     fill(255, 255, 255);
     text('Game Over! Your score: ' + score, 250, 350);
-    screenstate = "loss";
+    screenstate = "gameOver";
     //maybe just put in while loop... and run it until button is pressed
   }
 }

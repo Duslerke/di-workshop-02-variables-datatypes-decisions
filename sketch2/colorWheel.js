@@ -5,11 +5,14 @@ if (flipTheColorWheel) {
 } else {
     flipdir = 1;
 }
+
+var circDisplaceX = 0;
+var circDisplaceY = 75;
 // add displace the circle so you could get more red...if cricle moves down, while fliped .. more % screen is red
 
 function centerToMouseAngle (objectCoords) {
-    var xStrich = objectCoords[0] - canvaWidth/2;   //x ...
-    var yStrich = objectCoords[1] - canvaHeight/2; //y mouse coordinates with respect to canvas center
+    var xStrich = objectCoords[0] - canvaWidth/2 - circDisplaceX;   //x ...
+    var yStrich = objectCoords[1] - canvaHeight/2 - circDisplaceY; //y mouse coordinates with respect to canvas center
     yStrich = flipdir*yStrich;
     var rStrich = Math.sqrt(xStrich**2 + yStrich**2); //radius vector length in translated coordinates
     var cmAngle;
@@ -21,7 +24,13 @@ function centerToMouseAngle (objectCoords) {
         cmAngle = Math.PI - Math.asin( yStrich/rStrich );
     }
 
-    return 180*cmAngle/Math.PI;
+    var cmAngleDeg = 180*cmAngle/Math.PI;
+    if (cmAngleDeg < 0){
+        cmAngleDeg = 360 + cmAngleDeg;
+    }
+    // console.log(cmAngleDeg);
+
+    return cmAngleDeg;
 }
 
 function Coloriser (objectCoords) {
@@ -76,6 +85,7 @@ function Coloriser (objectCoords) {
         finalColor[0] = bonusZoneR;
         finalColor[1] = bonusZoneG;
         finalColor[2] = zonalB;
+        // console.log(finalColor, degAngle);
     }
     return finalColor;
 }

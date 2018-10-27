@@ -10,7 +10,7 @@ var canvaWidth = 1200;
 var canvaHeight = 600;
 var speedlimit = 1;
 var flickerfix = false;
-var gravAccel = 1;
+var gravAccell = 1;
 var bounceConst = 0.7;
 
 var frames = 0;
@@ -59,8 +59,10 @@ var playerOne = new Player(true);
 
 var shieldObj = new Shields();
 
+var startgame = new Button ("game", "Start Game", 600, 100, 100, 50, [170,80,0], gravAccell, canvaHeight/2);
 
-var startgame = new Button ("game", "Start Game", 600, 100, 100, 50);
+var replay = new Button ("menu", "Try Again!", canvaWidth/2 -50, canvaHeight/2 +25, 100, 50, [120,40,0]);
+
 
 
 
@@ -122,11 +124,9 @@ function draw() {
 
 
 function lossCond () {
-  if (true) { //if no shield - the later one is for later.
+  if (true && screenstate == 'game') { //if no shield - the later one is for later.
     //the difficult part is making rotating hitbox - need some time on that. Or I could hack --> if (Centers align) {...}
-    textSize(62);
-    fill(255, 255, 255);
-    text('Game Over! Your score: ' + score, 250, 350);
+    frames = 0; // reseting time for gameover sreen
     screenstate = "gameOver";
     //maybe just put in while loop... and run it until button is pressed
   }

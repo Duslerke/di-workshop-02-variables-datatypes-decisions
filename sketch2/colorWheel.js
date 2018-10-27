@@ -10,27 +10,33 @@ var circDisplaceX = 0;
 var circDisplaceY = 75;
 // add displace the circle so you could get more red...if cricle moves down, while fliped .. more % screen is red
 
-function centerToMouseAngle (objectCoords) {
+function centerToMouseAngle (objectCoords, mode='angle') {
+  
     var xStrich = objectCoords[0] - canvaWidth/2 - circDisplaceX;   //x ...
     var yStrich = objectCoords[1] - canvaHeight/2 - circDisplaceY; //y mouse coordinates with respect to canvas center
     yStrich = flipdir*yStrich;
     var rStrich = Math.sqrt(xStrich**2 + yStrich**2); //radius vector length in translated coordinates
-    var cmAngle;
 
-    if (xStrich >= 0) { //angles 270deg --> 90deg
-        cmAngle = Math.asin( yStrich/rStrich );
+    if (mode.toLowerCase() == 'radius') {
+        return rStrich;
     }
-    else { //angles 90deg -->270 deg
-        cmAngle = Math.PI - Math.asin( yStrich/rStrich );
-    }
+    else{
+        var cmAngle;
 
-    var cmAngleDeg = 180*cmAngle/Math.PI;
-    if (cmAngleDeg < 0){
-        cmAngleDeg = 360 + cmAngleDeg;
+        if (xStrich >= 0) { //angles 270deg --> 90deg
+            cmAngle = Math.asin( yStrich/rStrich );
+        }
+        else { //angles 90deg -->270 deg
+            cmAngle = Math.PI - Math.asin( yStrich/rStrich );
+        }
+    
+        var cmAngleDeg = 180*cmAngle/Math.PI;
+        if (cmAngleDeg < 0){ //negative arcsin angle recalculation
+            cmAngleDeg = 360 + cmAngleDeg;
+        }
+        // console.log(cmAngleDeg);
+        return cmAngleDeg;
     }
-    // console.log(cmAngleDeg);
-
-    return cmAngleDeg;
 }
 
 function Coloriser (objectCoords) {
@@ -87,16 +93,18 @@ function Coloriser (objectCoords) {
         finalColor[2] = zonalB;
         // console.log(finalColor, degAngle);
     }
+    rBrightener(objectCoords);
     return finalColor;
+
+    function rBrightener (objectCoords) {
+        var distance = centerToMouseAngle(objectCoords, 'radius');
+        var offset = 1;
+    
+        finalColor[0] += (10000/(distance+offset)**1); //10000 = wanted bright* at wanted radius^1 10000= 200*50
+        finalColor[1] += (10000/(distance+offset)**1);
+        finalColor[2] += (10000/(distance+offset)**1); // if i want to add 100 at 49px radius
+    }
 }
 
-//recalculate coords in terms of center
-// var canvaWidth = 1200;
-// var canvaHeight = 600;
+// Add a "brightener" function, which would brighten all the colors closer to the center
 
-// if (seeker[2] >= 0) {
-//     seeker[4] = Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
-//   }
-//   if (seeker[2] < 0) { //can change to x anyway
-//     seeker[4] = Math.PI - Math.asin(seeker[3]/Math.sqrt( Math.pow(seeker[2], 2) + Math.pow(seeker[3], 2) ));
-//   }

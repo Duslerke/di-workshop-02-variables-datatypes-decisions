@@ -6,12 +6,10 @@ var r = 80
 var g = 120
 var b = 90
 var z = 0;
-var canvaWidth = 1200;
-var canvaHeight = 600;
+
 var speedlimit = 1;
 var flickerfix = false;
-var gravAccell = 1;
-var bounceConst = 0.7;
+
 
 var frames = 0;
 var enemyFrames = 0;
@@ -43,27 +41,10 @@ for (let i = 0; i < nofood; i++) {
 }
 
 
-var shipAni = [];
-var backAni = [];
+
 // var planetAni = [];
 
-function preload () {
-  shipAni[0] = loadImage('./images/intro/pixil-frame-0.png');
-  shipAni[1] = loadImage('./images/intro/pixil-frame-1.png');
-  // shipAni[1] = loadImage('./images/intro/test.png');
-
-  backAni[0] = loadImage('./images/background/pixil-frame-0.png');
-  backAni[1] = loadImage('./images/background/pixil-frame-1.png');
-  backAni[2] = loadImage('./images/background/pixil-frame-2.png');
-  backAni[3] = loadImage('./images/background/pixil-frame-3.png');
-  backAni[4] = loadImage('./images/background/pixil-frame-4.png');
-  backAni[5] = loadImage('./images/background/pixil-frame-5.png');
-  backAni[6] = loadImage('./images/background/pixil-frame-6.png');
-
-  
-  // moonCopy = moon.get();
-  // moonCopy.resize(windowWidth,0);
-}
+//preload
 
 // function imageResizer () {
 
@@ -86,18 +67,32 @@ var playerOne = new Player(true);
 
 var shieldObj = new Shields();
 
-var startgame = new Button ("game", "Start Game", 600, 100, 100, 50, [170,80,0], gravAccell, canvaHeight/2);
 
 var replay = new Button ("menu", "Try Again!", canvaWidth/2 -50, canvaHeight/2 +25, 100, 50, [120,40,0]);
 
-var testscreen = new Button ("test", "Enter Test!", 450, 100, 100, 50, [80,150,0], gravAccell-0.2, canvaHeight/2);
-
-var introShipAn = new IntroShip ( [100, 200], shipAni );
-
-var introBackground = new Background ( backAni );
 
 
 
+
+function draw() {
+  switch (screenstate) {
+    case "menu": 
+      runmenu(); //create menu
+      break;
+    case "game":
+      rungame();
+      break;
+    case "gameOver":
+      runGameOver();
+      break;
+    case "test":
+      runTest();
+      break;
+    case "controls":
+      runControls();
+      break;
+  }
+}
 
 
 // rectangleArray.push(new Rectfollower([canvaWidth, canvaHeight*Math.random(), 1, 1, 0],true,speedlimit,'rocket'));
@@ -140,24 +135,6 @@ function rungame () {
   frames++; //need a function that does this
   
 }
-
-function draw() {
-  switch (screenstate) {
-    case "menu": 
-      runmenu(); //create menu
-      break;
-    case "game":
-      rungame();
-      break;
-    case "gameOver":
-      runGameOver();
-      break;
-    case "test":
-      runTest();
-      break;
-  }
-}
-
 
 
 function lossCond () {

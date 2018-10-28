@@ -49,6 +49,7 @@ class Rectfollower {
   
     death (index) {
       rectangleArray.splice(index, 1);
+      //deathAnimation... can't be a method - would take up too much space..having all frames loaded up
     }
 
     tracker (maxspeed, target) {
@@ -57,7 +58,7 @@ class Rectfollower {
         var truedist = distance(target, this.coordarray);
         var singleloop = false;
         
-        if ( speedlimit >= truedist[2] && !flickerfix){
+        if ( speedlimit >= truedist[2] && !flickerfix){ //fixes issue, where enemy jumps over the player.
           this.coordarray[2] = 0;
           this.coordarray[3] = 0;
           this.coordarray[0] = playerOne.playercoord[0];
@@ -127,7 +128,6 @@ function universalSpeedLimit (maxspeed, target, seeker) {
   var XYlimitArray = [limitx, limity]; // can finally be used in conditional statements;
 
   return XYlimitArray;
-  
 }
 
 function speeddirection (seeker) {

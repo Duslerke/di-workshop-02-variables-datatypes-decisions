@@ -3,6 +3,7 @@ var wobFrames = -20;
 var moveFrames = 0;
 var backFrames = 0;
 
+
 class Background {
     constructor (frameArray) {
         this.framedur = 0.8;
@@ -57,8 +58,8 @@ class IntroShip {
     // }
 
     moveDiscrete () {
-        if (moveFrames > 60) {
-            this.coordArray[0] += 50;
+        if (moveFrames > 30) {
+            // this.coordArray[0] += 25;
             moveFrames = 0;
         }
     }
@@ -75,12 +76,20 @@ class IntroShip {
     }
 }
 
+
+
 function runTest () {
     cursor(HAND);
-    background(r,g,b);
+    // background(r,g,b);
 
-    if (keyIsPressed && key == 'q') {
-        screenstate = 'menu';
+    if (keyIsPressed) {
+        if (key == 'q') {
+            screenstate = 'menu';
+        }
+        if (key == 'c') {
+            screenstate = 'controls';
+            testFrames=0;
+        }
     }
 
     introBackground.draw();
@@ -97,8 +106,12 @@ function displayQuit () {
     textSize(20)
     var a=Coloriser([mouseX,mouseY])
     fill (a[0],a[1],a[2])
-    text('Press q to quit test mode.', 10,30);
+    text('Press q to quit test mode. \nPress c for test 2', 10,30);
 }
 
 
+var introShipAn = new IntroShip ( [100, 200], shipAni );
 
+var introBackground = new Background ( backAni );
+
+// need skip button

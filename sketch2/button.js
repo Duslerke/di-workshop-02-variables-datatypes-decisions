@@ -15,6 +15,7 @@ class Button {
     click () {
       if (((this.x <= mouseX+7)&&(mouseX-7 <= this.x + this.w)) && ((this.y <= mouseY+7)&&(mouseY-7 <= this.y + this.h)))  {
         screenstate = this.purpose;
+        noCursor();
       }
     }
     draw () {
@@ -48,3 +49,4 @@ class Button {
     }
   
   }
+

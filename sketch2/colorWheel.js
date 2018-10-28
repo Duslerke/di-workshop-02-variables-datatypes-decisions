@@ -100,9 +100,17 @@ function Coloriser (objectCoords) {
         var distance = centerToMouseAngle(objectCoords, 'radius');
         var offset = 1;
     
-        finalColor[0] += (10000/(distance+offset)**1); //10000 = wanted bright* at wanted radius^1 10000= 200*50
-        finalColor[1] += (10000/(distance+offset)**1);
-        finalColor[2] += (10000/(distance+offset)**1); // if i want to add 100 at 49px radius
+        // finalColor[0] += (10000/(distance+offset)**1); //10000 = wanted bright* at wanted radius^1 10000= 200*50
+        // finalColor[1] += (10000/(distance+offset)**1);
+        // finalColor[2] += (10000/(distance+offset)**1); // if i want to add 100 at 49px radius
+
+        // finalColor[0] += (20300000/(distance+offset)**2.95);
+        // finalColor[1] += (20300000/(distance+offset)**2.95);
+        // finalColor[2] += (20300000/(distance+offset)**2.95);
+
+        finalColor[0] += (43651583/(distance+offset)**3.82); //did the math, got these constants
+        finalColor[1] += (43651583/(distance+offset)**3.82);
+        finalColor[2] += (43651583/(distance+offset)**3.82);
     }
 }
 

@@ -42,6 +42,33 @@ for (let i = 0; i < nofood; i++) {
   foodArrayAlive.push('demo');
 }
 
+
+var shipAni = [];
+var backAni = [];
+// var planetAni = [];
+
+function preload () {
+  shipAni[0] = loadImage('./images/intro/pixil-frame-0.png');
+  shipAni[1] = loadImage('./images/intro/pixil-frame-1.png');
+  // shipAni[1] = loadImage('./images/intro/test.png');
+
+  backAni[0] = loadImage('./images/background/pixil-frame-0.png');
+  backAni[1] = loadImage('./images/background/pixil-frame-1.png');
+  backAni[2] = loadImage('./images/background/pixil-frame-2.png');
+  backAni[3] = loadImage('./images/background/pixil-frame-3.png');
+  backAni[4] = loadImage('./images/background/pixil-frame-4.png');
+  backAni[5] = loadImage('./images/background/pixil-frame-5.png');
+  backAni[6] = loadImage('./images/background/pixil-frame-6.png');
+
+  
+  // moonCopy = moon.get();
+  // moonCopy.resize(windowWidth,0);
+}
+
+// function imageResizer () {
+
+// }
+
 function setup() {
   createCanvas(canvaWidth, canvaHeight)
 // frameRate(1);
@@ -62,6 +89,13 @@ var shieldObj = new Shields();
 var startgame = new Button ("game", "Start Game", 600, 100, 100, 50, [170,80,0], gravAccell, canvaHeight/2);
 
 var replay = new Button ("menu", "Try Again!", canvaWidth/2 -50, canvaHeight/2 +25, 100, 50, [120,40,0]);
+
+var testscreen = new Button ("test", "Enter Test!", 450, 100, 100, 50, [80,150,0], gravAccell-0.2, canvaHeight/2);
+
+var introShipAn = new IntroShip ( [100, 200], shipAni );
+
+var introBackground = new Background ( backAni );
+
 
 
 
@@ -117,6 +151,9 @@ function draw() {
       break;
     case "gameOver":
       runGameOver();
+      break;
+    case "test":
+      runTest();
       break;
   }
 }
